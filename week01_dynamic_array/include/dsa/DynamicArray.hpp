@@ -75,4 +75,18 @@ namespace dsa {
         delete[] data_;
     }
 
+
+    // Return how many real elements are stored.
+    template <class T>
+    std::size_t DynamicArray<T>::size() const {
+        return size_;
+    }
+
+
+    // Return how many elements fit inside the current memory block.
+    template <class T>
+    std::size_t DynamicArray<T>::capacity() const {
+        return capacity_;
+    }
+
 } // namespace dsa
