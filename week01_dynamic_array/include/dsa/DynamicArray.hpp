@@ -147,4 +147,22 @@ namespace dsa {
         capacity_ = newCapacity;
     }
 
+
+    // push_back() — add one element to the END of the array.
+    // If there is no free slot, I grow the capacity first.
+    // Growth strategy: double the capacity (or start with 1 if it was 0).
+    // Doubling makes push_back run in amortized O(1) time.
+    template <class T>
+    void DynamicArray<T>::push_back(const T& value) {
+        // If I am full, ask reserve() to grow my memory.
+        if (size_ == capacity_) {
+            std::size_t newCap = (capacity_ == 0) ? 1 : capacity_ * 2;
+            reserve(newCap);
+        }
+
+        // Put the new value at the first free slot, then increase size.
+        data_[size_] = value;
+        size_ = size_ + 1;
+    }
+
 } // namespace dsa
