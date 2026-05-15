@@ -43,5 +43,10 @@ int main() {
     a.erase(0);
     printArray(a);
 
+    // pop_back removes the last element.
+    std::cout << "\nAfter pop_back():\n";
+    a.pop_back();
+    printArray(a);
+
     return 0;
 }
