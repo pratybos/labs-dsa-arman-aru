@@ -1,0 +1,5 @@
+cd week01_dynamic_array
+cmake -S . -B build
+cmake --build build
+./build/week01_tests     # tests → 10/10 pass, 122 assertions
+./build/week01           # demo → shows push/insert/erase/pop/at()
