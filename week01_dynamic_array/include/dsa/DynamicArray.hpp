@@ -165,4 +165,16 @@ namespace dsa {
         size_ = size_ + 1;
     }
 
+
+    // pop_back() — remove the last element.
+    // I just decrease size_. I do NOT shrink capacity (the lab says so).
+    // If the array is empty, I do nothing (this is a safe choice for beginners).
+    template <class T>
+    void DynamicArray<T>::pop_back() {
+        if (size_ == 0) {
+            return;
+        }
+        size_ = size_ - 1;
+    }
+
 } // namespace dsa
