@@ -33,5 +33,15 @@ int main() {
     a.push_back(50);
     printArray(a);
 
+    // Insert 99 at position 2 — the values to the right shift over.
+    std::cout << "\nAfter insert(2, 99):\n";
+    a.insert(2, 99);
+    printArray(a);
+
+    // Erase the element at position 0 — the rest shifts left.
+    std::cout << "\nAfter erase(0):\n";
+    a.erase(0);
+    printArray(a);
+
     return 0;
 }
