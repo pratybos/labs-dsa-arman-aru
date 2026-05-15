@@ -121,4 +121,30 @@ namespace dsa {
         return data_[index];
     }
 
+
+    // reserve() — make sure capacity is at least newCapacity.
+    // Rule from the lab: this function only GROWS the capacity, it never shrinks.
+    template <class T>
+    void DynamicArray<T>::reserve(std::size_t newCapacity) {
+        // If the new size is not bigger, I do nothing.
+        if (newCapacity <= capacity_) {
+            return;
+        }
+
+        // Step 1: allocate a fresh block of raw memory of the new size.
+        T* newData = new T[newCapacity];
+
+        // Step 2: copy every existing item into the new block.
+        for (std::size_t i = 0; i < size_; ++i) {
+            newData[i] = data_[i];
+        }
+
+        // Step 3: free the old block so I don't leak memory.
+        delete[] data_;
+
+        // Step 4: now my "official" memory is the new block.
+        data_ = newData;
+        capacity_ = newCapacity;
+    }
+
 } // namespace dsa
