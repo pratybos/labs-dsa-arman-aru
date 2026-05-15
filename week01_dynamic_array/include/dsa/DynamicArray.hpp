@@ -177,4 +177,32 @@ namespace dsa {
         size_ = size_ - 1;
     }
 
+
+    // insert(index, value) — put value at position index, shift the rest right.
+    // Allowed indices: 0 <= index <= size_  (size_ means "insert at the end").
+    template <class T>
+    void DynamicArray<T>::insert(std::size_t index, const T& value) {
+        // Check the index is in the allowed range.
+        if (index > size_) {
+            throw std::out_of_range("DynamicArray::insert - index is out of range");
+        }
+
+        // Grow if I don't have a free slot to shift into.
+        if (size_ == capacity_) {
+            std::size_t newCap = (capacity_ == 0) ? 1 : capacity_ * 2;
+            reserve(newCap);
+        }
+
+        // Shift every item from the back toward the position `index`.
+        // I have to go from right to left, otherwise I would overwrite values.
+        // Example: [10, 20, 30] insert(1, 99) -> shift 30 then 20 -> [10, _, 20, 30]
+        for (std::size_t i = size_; i > index; --i) {
+            data_[i] = data_[i - 1];
+        }
+
+        // Now the slot at `index` is free — put the new value there.
+        data_[index] = value;
+        size_ = size_ + 1;
+    }
+
 } // namespace dsa
