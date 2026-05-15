@@ -24,5 +24,14 @@ int main() {
     std::cout << "Just created an empty DynamicArray:\n";
     printArray(a);
 
+    // Push a few numbers. Capacity will grow automatically.
+    std::cout << "\nAfter push_back 10, 20, 30, 40, 50:\n";
+    a.push_back(10);
+    a.push_back(20);
+    a.push_back(30);
+    a.push_back(40);
+    a.push_back(50);
+    printArray(a);
+
     return 0;
 }
