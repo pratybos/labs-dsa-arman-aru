@@ -1,51 +1,55 @@
-//
-// Created by marius on 1/26/26.
-//
-
-// Supported by GCC, Clang, MSVC
-
 // DynamicArray<T>
 // ----------------
-// A simple resizable array implementation.
-// Implemented as a template so it can store elements of any type T.
-// Used to demonstrate memory allocation, resizing, and basic container design.
-// This is an educational implementation (not a replacement for std::vector).
+// My own simple version of std::vector for the DSA course.
+// It is a template so it can hold any type T (int, double, string, ...).
+// I use raw memory (new[] / delete[]) like the lab requires.
+//
+// Idea in one sentence:
+//   I keep a pointer to a block of memory (data_),
+//   I remember how many items I actually have (size_),
+//   and I remember how big the block is (capacity_).
+//   When the block gets full, I make a bigger block and copy everything over.
 
 #pragma once
-#include <cstddef>
-#include <stdexcept>
+#include <cstddef>     // for std::size_t
+#include <stdexcept>   // for std::out_of_range
 
 namespace dsa {
 
     template <class T>
     class DynamicArray {
     public:
+        // ---- Big three: constructor, destructor ----
         DynamicArray();
         ~DynamicArray();
 
-        std::size_t size() const;
-        std::size_t capacity() const;
+        // ---- Info about the array ----
+        std::size_t size() const;       // how many items I currently store
+        std::size_t capacity() const;   // how many items fit before I must grow
 
+        // ---- Fast access (no checking, like std::vector::operator[]) ----
         T& operator[](std::size_t index);
         const T& operator[](std::size_t index) const;
 
-        // Safe access
+        // ---- Safe access (throws if index is bad) ----
         T& at(std::size_t index);
         const T& at(std::size_t index) const;
 
+        // ---- Adding / removing at the end ----
         void push_back(const T& value);
         void pop_back();
 
-        // Part B (lab / homework)
+        // ---- Part B: insert / erase anywhere ----
         void insert(std::size_t index, const T& value);
         void erase(std::size_t index);
 
+        // ---- Manually grow the storage (does not shrink) ----
         void reserve(std::size_t newCapacity);
 
     private:
-        T* data_;
-        std::size_t size_;
-        std::size_t capacity_;
+        T* data_;                 // pointer to the raw memory block
+        std::size_t size_;        // number of real items in the array
+        std::size_t capacity_;    // total slots available in data_
     };
 
 } // namespace dsa
