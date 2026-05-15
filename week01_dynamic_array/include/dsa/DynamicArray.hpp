@@ -59,4 +59,12 @@ namespace dsa {
     // so I put the definitions in this header file (not in a .cpp file).
     // =====================================================================
 
+
+    // Constructor: build an empty array.
+    // No memory is allocated yet — I only ask for memory when I really need it.
+    template <class T>
+    DynamicArray<T>::DynamicArray()
+        : data_(nullptr), size_(0), capacity_(0) {
+    }
+
 } // namespace dsa
