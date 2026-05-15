@@ -102,4 +102,23 @@ namespace dsa {
         return data_[index];
     }
 
+
+    // at() — safe access. If the index is wrong I throw std::out_of_range.
+    // I check index >= size_ (NOT capacity_) because empty slots are not real items.
+    template <class T>
+    T& DynamicArray<T>::at(std::size_t index) {
+        if (index >= size_) {
+            throw std::out_of_range("DynamicArray::at - index is out of range");
+        }
+        return data_[index];
+    }
+
+    template <class T>
+    const T& DynamicArray<T>::at(std::size_t index) const {
+        if (index >= size_) {
+            throw std::out_of_range("DynamicArray::at - index is out of range");
+        }
+        return data_[index];
+    }
+
 } // namespace dsa
