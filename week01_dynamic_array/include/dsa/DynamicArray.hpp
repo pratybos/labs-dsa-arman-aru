@@ -67,4 +67,12 @@ namespace dsa {
         : data_(nullptr), size_(0), capacity_(0) {
     }
 
+
+    // Destructor: free the memory I allocated with new[].
+    // delete[] is safe even when data_ is nullptr.
+    template <class T>
+    DynamicArray<T>::~DynamicArray() {
+        delete[] data_;
+    }
+
 } // namespace dsa
