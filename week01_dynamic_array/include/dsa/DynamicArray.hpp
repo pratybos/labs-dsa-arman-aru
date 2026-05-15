@@ -205,4 +205,24 @@ namespace dsa {
         size_ = size_ + 1;
     }
 
+
+    // erase(index) — remove the element at position index, shift the rest left.
+    // Allowed indices: 0 <= index < size_.
+    template <class T>
+    void DynamicArray<T>::erase(std::size_t index) {
+        // Check the index. Note: index == size_ is NOT allowed for erase.
+        if (index >= size_) {
+            throw std::out_of_range("DynamicArray::erase - index is out of range");
+        }
+
+        // Shift every item after `index` one step to the left.
+        // Example: [10, 20, 30, 40] erase(1) -> [10, 30, 40, 40] then size shrinks.
+        for (std::size_t i = index; i + 1 < size_; ++i) {
+            data_[i] = data_[i + 1];
+        }
+
+        // Drop the size by 1. Capacity stays the same.
+        size_ = size_ - 1;
+    }
+
 } // namespace dsa
