@@ -48,5 +48,15 @@ int main() {
     a.pop_back();
     printArray(a);
 
+    // at() throws if the index is wrong. I catch the error so the program
+    // does not crash and I can show the message to the user.
+    std::cout << "\nTrying a.at(999) (should throw):\n";
+    try {
+        std::cout << a.at(999) << "\n";
+    } catch (const std::out_of_range& e) {
+        std::cout << "  Caught error: " << e.what() << "\n";
+    }
+
+    std::cout << "\nDemo finished.\n";
     return 0;
 }
