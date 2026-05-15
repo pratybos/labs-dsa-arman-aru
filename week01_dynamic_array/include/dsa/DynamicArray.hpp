@@ -52,4 +52,11 @@ namespace dsa {
         std::size_t capacity_;    // total slots available in data_
     };
 
+
+    // =====================================================================
+    // Implementation below.
+    // Templates must have their code visible to the compiler when used,
+    // so I put the definitions in this header file (not in a .cpp file).
+    // =====================================================================
+
 } // namespace dsa
