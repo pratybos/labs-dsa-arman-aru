@@ -89,4 +89,17 @@ namespace dsa {
         return capacity_;
     }
 
+
+    // operator[] — fast access, no bounds checking (just like std::vector).
+    // The user is responsible for passing a valid index here.
+    template <class T>
+    T& DynamicArray<T>::operator[](std::size_t index) {
+        return data_[index];
+    }
+
+    template <class T>
+    const T& DynamicArray<T>::operator[](std::size_t index) const {
+        return data_[index];
+    }
+
 } // namespace dsa
