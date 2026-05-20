@@ -45,6 +45,13 @@ namespace dsa {
             return n;
         }
 
+        bool contains_rec(Node* n, const T& key) const {
+            if (n == nullptr) return false;
+            if (key < n->key) return contains_rec(n->left, key);
+            if (n->key < key) return contains_rec(n->right, key);
+            return true; // equal
+        }
+
     public:
         BST() : root_(nullptr), size_(0) {}
         ~BST() { clear_rec(root_); }
@@ -54,6 +61,10 @@ namespace dsa {
 
         void insert(const T& key) {
             root_ = insert_rec(root_, key);
+        }
+
+        bool contains(const T& key) const {
+            return contains_rec(root_, key);
         }
     };
 
