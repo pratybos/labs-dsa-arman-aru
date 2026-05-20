@@ -52,6 +52,24 @@ namespace dsa {
             return true; // equal
         }
 
+        // Smallest key in the subtree = leftmost node.
+        Node* min_node(Node* n) const {
+            while (n->left != nullptr) n = n->left;
+            return n;
+        }
+
+        Node* max_node(Node* n) const {
+            while (n->right != nullptr) n = n->right;
+            return n;
+        }
+
+        std::size_t height_rec(Node* n) const {
+            if (n == nullptr) return 0;
+            std::size_t hL = height_rec(n->left);
+            std::size_t hR = height_rec(n->right);
+            return 1 + (hL > hR ? hL : hR);
+        }
+
     public:
         BST() : root_(nullptr), size_(0) {}
         ~BST() { clear_rec(root_); }
@@ -65,6 +83,24 @@ namespace dsa {
 
         bool contains(const T& key) const {
             return contains_rec(root_, key);
+        }
+
+        const T& min() const {
+            if (root_ == nullptr) {
+                throw std::out_of_range("BST::min - empty");
+            }
+            return min_node(root_)->key;
+        }
+
+        const T& max() const {
+            if (root_ == nullptr) {
+                throw std::out_of_range("BST::max - empty");
+            }
+            return max_node(root_)->key;
+        }
+
+        std::size_t height() const {
+            return height_rec(root_);
         }
     };
 
