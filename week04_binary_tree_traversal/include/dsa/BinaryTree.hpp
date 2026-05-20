@@ -62,6 +62,33 @@ namespace dsa {
             root_ = new Node(value);
             size_ = 1;
         }
+
+        // add_left(parent, child) — attach a new left child under the parent.
+        // Throws std::out_of_range if parent not found.
+        // Throws std::logic_error if the parent already has a left child.
+        void add_left(const T& parentValue, const T& childValue) {
+            Node* p = find_rec(root_, parentValue);
+            if (p == nullptr) {
+                throw std::out_of_range("BinaryTree::add_left - parent not found");
+            }
+            if (p->left != nullptr) {
+                throw std::logic_error("BinaryTree::add_left - left child exists");
+            }
+            p->left = new Node(childValue);
+            size_ = size_ + 1;
+        }
+
+        void add_right(const T& parentValue, const T& childValue) {
+            Node* p = find_rec(root_, parentValue);
+            if (p == nullptr) {
+                throw std::out_of_range("BinaryTree::add_right - parent not found");
+            }
+            if (p->right != nullptr) {
+                throw std::logic_error("BinaryTree::add_right - right child exists");
+            }
+            p->right = new Node(childValue);
+            size_ = size_ + 1;
+        }
     };
 
 } // namespace dsa
