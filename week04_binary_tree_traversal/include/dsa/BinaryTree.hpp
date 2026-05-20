@@ -32,6 +32,15 @@ namespace dsa {
             delete n;
         }
 
+        // Find a node by value anywhere in the subtree. Returns nullptr if not found.
+        Node* find_rec(Node* n, const T& value) const {
+            if (n == nullptr) return nullptr;
+            if (n->value == value) return n;
+            Node* leftRes = find_rec(n->left, value);
+            if (leftRes != nullptr) return leftRes;
+            return find_rec(n->right, value);
+        }
+
     public:
         BinaryTree() : root_(nullptr), size_(0) {}
         ~BinaryTree() { clear(); }
@@ -43,6 +52,15 @@ namespace dsa {
             clear_rec(root_);
             root_ = nullptr;
             size_ = 0;
+        }
+
+        // set_root — create the very first node. Error if root already exists.
+        void set_root(const T& value) {
+            if (root_ != nullptr) {
+                throw std::logic_error("BinaryTree::set_root - root already exists");
+            }
+            root_ = new Node(value);
+            size_ = 1;
         }
     };
 
