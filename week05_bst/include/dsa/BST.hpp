@@ -1,8 +1,13 @@
 // BST<T>  — Binary Search Tree
 // ----------------------------
-// Skeleton step: Node struct + ctor + dtor + clear.
-// I will add insert/contains/min/max/height/inorder/remove
-// in the next commits.
+// Rules (these are the WHOLE point of a BST):
+//   For every node with key K:
+//     - all keys in the LEFT  subtree are <  K
+//     - all keys in the RIGHT subtree are >  K
+//   Duplicates: I IGNORE them (do not insert).
+//
+// I use recursion for insert, contains, traversal, and remove —
+// recursion fits trees naturally because a subtree is also a tree.
 
 #pragma once
 #include <cstddef>
@@ -23,7 +28,8 @@ namespace dsa {
         Node* root_;
         std::size_t size_;
 
-        // Recursively delete every node in the subtree.
+        // ---------- recursive helpers ----------
+
         void clear_rec(Node* n) {
             if (n == nullptr) return;
             clear_rec(n->left);
@@ -31,7 +37,8 @@ namespace dsa {
             delete n;
         }
 
-        // Insert key into the subtree. Duplicates are ignored.
+        // Insert key into the subtree, return the (possibly new) root of subtree.
+        // If the key already exists, I just return n (ignore the duplicate).
         Node* insert_rec(Node* n, const T& key) {
             if (n == nullptr) {
                 size_ = size_ + 1;
@@ -42,6 +49,7 @@ namespace dsa {
             } else if (n->key < key) {
                 n->right = insert_rec(n->right, key);
             }
+            // else: equal -> ignore
             return n;
         }
 
@@ -68,6 +76,54 @@ namespace dsa {
             std::size_t hL = height_rec(n->left);
             std::size_t hR = height_rec(n->right);
             return 1 + (hL > hR ? hL : hR);
+        }
+
+        void inorder_rec(Node* n, T* out, std::size_t& idx) const {
+            if (n == nullptr) return;
+            inorder_rec(n->left, out, idx);
+            out[idx++] = n->key;
+            inorder_rec(n->right, out, idx);
+        }
+
+        // Remove key from subtree rooted at n.
+        // Returns the new root of that subtree. Sets `removed` to true if found.
+        // The 3 cases:
+        //   - no children -> just delete and return nullptr
+        //   - one child   -> replace n with that child
+        //   - two children -> find inorder successor (min of right subtree),
+        //                     copy its key here, then remove that successor
+        Node* remove_rec(Node* n, const T& key, bool& removed) {
+            if (n == nullptr) return nullptr;
+            if (key < n->key) {
+                n->left = remove_rec(n->left, key, removed);
+                return n;
+            }
+            if (n->key < key) {
+                n->right = remove_rec(n->right, key, removed);
+                return n;
+            }
+            // Found the node to remove.
+            removed = true;
+            if (n->left == nullptr && n->right == nullptr) {
+                delete n;
+                return nullptr;
+            }
+            if (n->left == nullptr) {
+                Node* r = n->right;
+                delete n;
+                return r;
+            }
+            if (n->right == nullptr) {
+                Node* l = n->left;
+                delete n;
+                return l;
+            }
+            // Two children: replace with inorder successor.
+            Node* succ = min_node(n->right);
+            n->key = succ->key;
+            bool dummy = false;
+            n->right = remove_rec(n->right, succ->key, dummy);
+            return n;
         }
 
     public:
@@ -101,6 +157,20 @@ namespace dsa {
 
         std::size_t height() const {
             return height_rec(root_);
+        }
+
+        // Writes keys in sorted order into out (caller provides size>=size()).
+        void inorder(T* out) const {
+            std::size_t idx = 0;
+            inorder_rec(root_, out, idx);
+        }
+
+        // Returns true if the key was found and removed.
+        bool remove(const T& key) {
+            bool removed = false;
+            root_ = remove_rec(root_, key, removed);
+            if (removed) size_ = size_ - 1;
+            return removed;
         }
     };
 
