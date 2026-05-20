@@ -31,12 +31,30 @@ namespace dsa {
             delete n;
         }
 
+        // Insert key into the subtree. Duplicates are ignored.
+        Node* insert_rec(Node* n, const T& key) {
+            if (n == nullptr) {
+                size_ = size_ + 1;
+                return new Node(key);
+            }
+            if (key < n->key) {
+                n->left = insert_rec(n->left, key);
+            } else if (n->key < key) {
+                n->right = insert_rec(n->right, key);
+            }
+            return n;
+        }
+
     public:
         BST() : root_(nullptr), size_(0) {}
         ~BST() { clear_rec(root_); }
 
         std::size_t size() const { return size_; }
         bool empty() const { return root_ == nullptr; }
+
+        void insert(const T& key) {
+            root_ = insert_rec(root_, key);
+        }
     };
 
 } // namespace dsa
