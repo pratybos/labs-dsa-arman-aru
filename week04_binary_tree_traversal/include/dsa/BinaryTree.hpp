@@ -1,8 +1,14 @@
-// BinaryTree<T> — Week 04
-// -----------------------
-// Skeleton step: I lay down the basics first (private Node struct,
-// constructor, destructor, clear). Methods like set_root/traversals
-// will be added in the next commits.
+// BinaryTree<T>
+// -------------
+// IMPORTANT: this is NOT a Binary Search Tree.
+// There is no ordering rule. I build the tree MANUALLY by saying
+// "add this child under this parent". Values are assumed unique.
+//
+// Operations I implement:
+//   set_root, add_left, add_right          (manual build)
+//   preorder, inorder, postorder           (recursion, write to T* out)
+//   height, contains                       (recursion)
+//   clear, ~BinaryTree                     (delete all nodes)
 
 #pragma once
 #include <cstddef>
@@ -13,7 +19,6 @@ namespace dsa {
     template <class T>
     class BinaryTree {
     private:
-        // Each tree node holds a value and two child pointers.
         struct Node {
             T value;
             Node* left;
@@ -24,7 +29,11 @@ namespace dsa {
         Node* root_;
         std::size_t size_;
 
-        // Recursively delete a subtree (post-order so children go first).
+        // -------- private recursive helpers --------
+
+        // Delete every node in the subtree rooted at n.
+        // Post-order (children first, then n) so we never delete a parent
+        // while it still owns living children.
         void clear_rec(Node* n) {
             if (n == nullptr) return;
             clear_rec(n->left);
@@ -39,6 +48,14 @@ namespace dsa {
             Node* leftRes = find_rec(n->left, value);
             if (leftRes != nullptr) return leftRes;
             return find_rec(n->right, value);
+        }
+
+        // Height: empty subtree = 0, leaf = 1, otherwise 1 + max(left,right).
+        std::size_t height_rec(Node* n) const {
+            if (n == nullptr) return 0;
+            std::size_t hL = height_rec(n->left);
+            std::size_t hR = height_rec(n->right);
+            return 1 + (hL > hR ? hL : hR);
         }
 
         // Traversals: write into out[idx] and bump idx.
@@ -122,6 +139,14 @@ namespace dsa {
         void postorder(T* out) const {
             std::size_t idx = 0;
             postorder_rec(root_, out, idx);
+        }
+
+        std::size_t height() const {
+            return height_rec(root_);
+        }
+
+        bool contains(const T& value) const {
+            return find_rec(root_, value) != nullptr;
         }
     };
 
