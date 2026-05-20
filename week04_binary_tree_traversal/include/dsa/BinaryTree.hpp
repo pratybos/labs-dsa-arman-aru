@@ -41,6 +41,26 @@ namespace dsa {
             return find_rec(n->right, value);
         }
 
+        // Traversals: write into out[idx] and bump idx.
+        void preorder_rec(Node* n, T* out, std::size_t& idx) const {
+            if (n == nullptr) return;
+            out[idx++] = n->value;       // visit
+            preorder_rec(n->left, out, idx);
+            preorder_rec(n->right, out, idx);
+        }
+        void inorder_rec(Node* n, T* out, std::size_t& idx) const {
+            if (n == nullptr) return;
+            inorder_rec(n->left, out, idx);
+            out[idx++] = n->value;
+            inorder_rec(n->right, out, idx);
+        }
+        void postorder_rec(Node* n, T* out, std::size_t& idx) const {
+            if (n == nullptr) return;
+            postorder_rec(n->left, out, idx);
+            postorder_rec(n->right, out, idx);
+            out[idx++] = n->value;
+        }
+
     public:
         BinaryTree() : root_(nullptr), size_(0) {}
         ~BinaryTree() { clear(); }
@@ -88,6 +108,20 @@ namespace dsa {
             }
             p->right = new Node(childValue);
             size_ = size_ + 1;
+        }
+
+        // Traversals: write into out (caller must give an array of at least size()).
+        void preorder(T* out) const {
+            std::size_t idx = 0;
+            preorder_rec(root_, out, idx);
+        }
+        void inorder(T* out) const {
+            std::size_t idx = 0;
+            inorder_rec(root_, out, idx);
+        }
+        void postorder(T* out) const {
+            std::size_t idx = 0;
+            postorder_rec(root_, out, idx);
         }
     };
 
