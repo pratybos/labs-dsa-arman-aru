@@ -2,9 +2,7 @@
 
 VIKO — Algorithms and Data Structures lab work.
 Every data structure / algorithm is written **from scratch** in C++
-(no STL containers, raw `new`/`delete`, heavy per-line comments so I can
-defend every line to the teacher). Tests use the single-header
-[doctest](https://github.com/doctest/doctest) framework.
+
 
 ## How to build & run a week
 
