@@ -1,3 +1,7 @@
-week01_dynamic_array/cmake-build-debug
-.idea
+# Build output (CMake)
 build/
+**/build/
+
+# macOS junk
+.DS_Store
+**/.DS_Store
